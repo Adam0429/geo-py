@@ -487,6 +487,16 @@ def add_watermark(from_path,to_path):
     del dataset
     driver = None
 
+
+def cropToCutline(input_path,output_path):
+#这样操作后文件会变小，但数据形状没有变化
+    ds = gdal.Warp(output_path,
+                input_path,
+                cropToCutline=True,
+                format='GTiff',
+                    )   
+    ds = None
+
 def cut_tif(origin_data,origin_transform,output_size):
     origin_size = origin_data.shape
     x = origin_transform[0]
