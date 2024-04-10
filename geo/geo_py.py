@@ -19,8 +19,7 @@ import random
 from PIL import Image, ImageDraw, ImageFont
 import sys
 
-abspath = os.path.abspath(os.path.join(sys.path[0],'..'))
-font_path = os.path.join(abspath,"geo-py/geo/SimHei.ttf")
+font_path = os.path.join('geo','SimHei.ttf')
 
 def read_tif(tif_path):
     ds = gdal.Open(tif_path)
