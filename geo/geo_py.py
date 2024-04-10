@@ -16,8 +16,11 @@ from shapely.geometry import Polygon
 import geopandas as gpd
 import cv2
 import random
+from PIL import Image, ImageDraw, ImageFont
+import sys
 
-
+abspath = os.path.abspath(os.path.join(sys.path[0],'..'))
+font_path = os.path.join(abspath,"geo-py/geo/SimHei.ttf")
 
 def read_tif(tif_path):
     ds = gdal.Open(tif_path)
@@ -371,11 +374,10 @@ def add_watermark(from_path,to_path):
         return array1
 
     def cv2AddChineseText(img, text, position, textColor=(0, 255, 0), textSize=30):
-        from PIL import Image, ImageDraw, ImageFont
         if (isinstance(img, np.ndarray)):  # 判断是否OpenCV图片类型
             img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
         draw = ImageDraw.Draw(img)
-        fontStyle = ImageFont.truetype("/Users/wangfeihong/Desktop/geo-py/geo/SimHei.ttf", textSize, encoding="utf-8")
+        fontStyle = ImageFont.truetype(font_path, textSize, encoding="utf-8")
         draw.text(position, text, textColor, font=fontStyle)
         return cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR)
 
@@ -511,5 +513,3 @@ def cut_tif(origin_data,origin_transform,output_size):
             output_transform = (x+j*output_x_step*output_size[0],output_x_step,0,y+i*output_y_step*output_size[0],0,output_y_step) 
 #             if output_data.max() >100:
             write_tif(f'test/{i}_{j}.tif', output_data, output_transform)
-
-# add_watermark('/Users/wangfeihong/Desktop/BJSJS20210921_GF_6.tif','/Users/wangfeihong/Downloads/1.tif')
